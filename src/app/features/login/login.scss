@@ -1,0 +1,18 @@
+.bethel-login {
+  &__overlay {
+    max-width: 560px;
+    border-radius: 56px;
+    padding: 0.3rem;
+    background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%);
+  }
+  &__inner {
+    border-radius: 56px;
+    padding-top: 20px;
+    & img {
+      max-width: 150px;
+      width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+}
