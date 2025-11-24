@@ -1,11 +1,11 @@
 import { Component, signal } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
-import { Login } from './features/login/login';
 import { ThemeService } from './core/services/theme.service';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [ButtonModule, Login],
+  imports: [ButtonModule, RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

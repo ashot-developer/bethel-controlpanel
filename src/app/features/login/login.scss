@@ -1,6 +1,7 @@
 .bethel-login {
   &__overlay {
     max-width: 560px;
+    width: 100%;
     border-radius: 56px;
     padding: 0.3rem;
     background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%);
