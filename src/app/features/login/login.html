@@ -1,30 +1,33 @@
-<div class="bethel-login p-2 bg-surface-50 flex items-center dark:bg-surface-950 justify-center min-h-screen min-w-screen overflow-hidden">
+<div
+  class="bethel-login p-2 bg-surface-50 flex items-center dark:bg-surface-950 justify-center min-h-screen min-w-screen overflow-hidden">
   <div class="bethel-login__overlay">
     <div class="bethel-login__inner pt-20 py-20 px-8 sm:px-20 bg-surface-0 dark:bg-surface-900">
       @if(isDarkMode()) {
-        <img src="assets/img/logos/logo-white.svg" alt="Bethel Logo" class="mb-8">
+      <img src="assets/img/logos/logo-white.svg" alt="Bethel Logo" class="mb-8">
       } @else {
-        <img src="assets/img/logos/logo-normal.png" alt="Bethel Logo" class="mb-8">
-        
+      <img src="assets/img/logos/logo-normal.png" alt="Bethel Logo" class="mb-8">
+
       }
       <div class="bethel-login_form">
-        <div class="bethel-login_form--group flex flex-col mb-8">
-          <label for="email1" class="mb-2 text-surface-900 dark:text-surface-0">Էլ․ փոստ</label>
-          <input pInputText id="email1" type="text" placeholder="Էլ․ փոստ" />
-        </div>
-        <div class="bethel-login_form--group flex flex-col">
-          <label for="password1" class="mb-2 text-surface-900 dark:text-surface-0">Գաղտնաբառ</label>
-          <p-password id="password1" placeholder="Գաղտնաբառ" [toggleMask]="true" [fluid]="true" [feedback]="false">
-          </p-password>
-        </div>
-
-        <div class="flex items-center justify-between mt-2 mb-8 gap-8">
-          <div class="flex items-center">
-            <p-checkbox id="rememberme1" binary class="mr-2"></p-checkbox>
-            <label for="rememberme1" class="text-surface-900 dark:text-surface-0">Հիշել</label>
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <div class="bethel-login_form--group flex flex-col mb-8">
+            <label for="email1" class="mb-2 text-surface-900 dark:text-surface-0">Էլ․ փոստ</label>
+            <input pInputText id="email1" type="text" placeholder="Էլ․ փոստ" formControlName="identifier" />
           </div>
-        </div>
-        <p-button label="Մուտք գործել" styleClass="w-full" routerLink="/"></p-button>
+          <div class="bethel-login_form--group flex flex-col">
+            <label for="password1" class="mb-2 text-surface-900 dark:text-surface-0">Գաղտնաբառ</label>
+            <p-password id="password1" placeholder="Գաղտնաբառ" [toggleMask]="true" [fluid]="true" [feedback]="false" formControlName="password">
+            </p-password>
+          </div>
+
+          <div class="flex items-center justify-between mt-2 mb-8 gap-8">
+            <div class="flex items-center">
+              <p-checkbox id="rememberme1" binary class="mr-2" formControlName="rememberMe"></p-checkbox>
+              <label for="rememberme1" class="text-surface-900 dark:text-surface-0">Հիշել</label>
+            </div>
+          </div>
+          <p-button [disabled]="loginForm.invalid" type="submit" label="Մուտք գործել" styleClass="w-full" routerLink="/"></p-button>
+        </form>
       </div>
     </div>
   </div>
