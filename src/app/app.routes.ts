@@ -1,21 +1,23 @@
 import { Routes } from '@angular/router';
-import { Login } from './features/login/login';
-import { Dashboard } from './features/dashboard/dashboard';
-import { MainLayout } from './core/layout/main-layout';
+import { authGuard } from './core/auth/guards/auth-guard';
 
 export const routes: Routes = [
   // Public routes (no layout)
   {
     path: 'login',
-    component: Login
+    loadComponent: () => import('./features/login/login').then(m => m.Login)
   },
   // Protected routes (with main layout)
   {
     path: '',
-    component: MainLayout,
+    loadComponent: () => import('./core/layout/main-layout').then(m => m.MainLayout),
     children: [
-      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-      { path: 'dashboard', component: Dashboard },
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full'},
+      {
+        path: 'dashboard',
+        loadComponent: () => import('./features/dashboard/dashboard').then(m => m.Dashboard),
+        canActivate: [authGuard]
+      },
     ]
   },
   // 404 fallback

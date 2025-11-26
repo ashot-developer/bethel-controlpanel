@@ -8,7 +8,7 @@ interface AuthState {
   token: string | null;
   isLoading: boolean;
   error: string | null;
-  isInitialized: boolean;
+  isAuthenticated: boolean;
   rememberMe: boolean;
 }
 
@@ -17,7 +17,7 @@ const initialState = {
     token: null,
     isLoading: false,
     error: null,
-    isInitialized: false,
+    isAuthenticated: false,
     rememberMe: false
   }
 
@@ -32,6 +32,7 @@ export class AuthStateService {
 
   readonly userRole = computed(() => this.state().user?.role.type);
   readonly token = computed(() => this.state().token);
+  readonly isAuthenticated = computed(() => this.state().isAuthenticated);
 
   constructor() {
     this.initAuth();
@@ -47,7 +48,8 @@ export class AuthStateService {
           token: res.jwt,
           rememberMe,
           isLoading: false,
-          error: null
+          error: null,
+          isAuthenticated: true
         })
         localStorage.setItem('auth_token', res.jwt);
 
@@ -66,22 +68,25 @@ export class AuthStateService {
   private initAuth() {
     const token = localStorage.getItem('auth_token');
     if(token) {
-      this.updateState({ isLoading: true, error: null, token: token });
+      // Set authenticated immediately based on token presence
+      this.updateState({ token, isAuthenticated: true, isLoading: true });
+
+      // Verify token and get user data
       this.authApi.getCurrentUser().subscribe({
         next: (res: User) => {
-          this.updateState({user: res, isLoading: false, isInitialized: true});
+          this.updateState({user: res, isLoading: false, isAuthenticated: true});
         },
         error: (error) => {
           if (error.status === 401 || error.status === 403) {
-            this.updateState({isLoading: false, isInitialized: true});
+            this.updateState({isLoading: false, isAuthenticated: false});
             this.logout();
           } else {
-            this.updateState({isLoading: false, isInitialized: true});
+            this.updateState({isLoading: false, isAuthenticated: false});
           }
         }
       })
     } else {
-      this.updateState({ isInitialized: true });
+      this.updateState({ isAuthenticated: false });
     }
   }
 

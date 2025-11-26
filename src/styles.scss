@@ -1,7 +1,10 @@
 @use './assets/css/tailwind.css';
+@use './assets/layout/layout.scss';
+@import "primeicons/primeicons.css";
 
 :root {
   --primary-color: var(--p-primary-color);
+  --surface-card: var(--p-content-background);
 }
 
 /* Armenian Font Configuration */
