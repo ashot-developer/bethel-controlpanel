@@ -1,0 +1,9 @@
+<ul class="layout-menu">
+  @for (item of model; track item; let i = $index) {
+    @if (!item.separator) {
+      <bethel-menu-item [item]="item" [index]="i" [root]="true"></bethel-menu-item>
+    } @else {
+      <li class="menu-separator"></li>
+    }
+  }
+</ul>

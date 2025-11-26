@@ -1,1 +1,11 @@
-<router-outlet></router-outlet>
+<div class="layout-wrapper layout-static">
+  <bethel-topbar></bethel-topbar>
+  <bethel-sidebar></bethel-sidebar>
+  <div class="layout-main-container">
+    <div class="layout-main">
+      <router-outlet></router-outlet>
+    </div>
+    <bethel-footer></bethel-footer>
+  </div>
+  <div class="layout-mask animate-fadein"></div>
+</div>
