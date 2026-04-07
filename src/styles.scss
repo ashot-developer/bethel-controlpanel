@@ -1,1 +1,31 @@
-/* You can add global styles to this file, and also import other style files */
+@use './assets/css/tailwind.css';
+@use './assets/layout/layout.scss';
+@import "primeicons/primeicons.css";
+
+:root {
+  --primary-color: var(--p-primary-color);
+  --surface-card: var(--p-content-background);
+}
+
+/* Armenian Font Configuration */
+* {
+  font-family: 'Noto Sans Armenian', 'Sylfaen', 'Arial Unicode MS', sans-serif;
+}
+
+body {
+  font-family: 'Noto Sans Armenian', 'Sylfaen', 'Arial Unicode MS', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+}
+
+/* Headings with Serif font for elegance */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Noto Serif Armenian', 'Noto Sans Armenian', 'Sylfaen', serif;
+}
+
+/* Ensure buttons and inputs use the same font */
+button, input, select, textarea {
+  font-family: inherit;
+}
+

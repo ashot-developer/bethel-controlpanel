@@ -1,0 +1,20 @@
+<div class="layout-wrapper"
+     [ngClass]="{
+       'layout-overlay': layoutService.isOverlay(),
+       'layout-static': !layoutService.isOverlay(),
+       'layout-static-inactive': layoutService.layoutState().staticMenuDesktopInactive && !layoutService.isOverlay(),
+       'layout-overlay-active': layoutService.layoutState().overlayMenuActive && layoutService.isOverlay(),
+       'layout-mobile-active': layoutService.layoutState().staticMenuMobileActive,
+       'p-input-filled': true,
+       'p-ripple-disabled': false
+     }">
+  <bethel-topbar></bethel-topbar>
+  <bethel-sidebar></bethel-sidebar>
+  <div class="layout-main-container">
+    <div class="layout-main">
+      <router-outlet></router-outlet>
+    </div>
+    <bethel-footer></bethel-footer>
+  </div>
+  <div class="layout-mask animate-fadein"></div>
+</div>
