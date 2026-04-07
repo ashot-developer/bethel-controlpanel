@@ -5,17 +5,17 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { RippleModule } from 'primeng/ripple';
-import { ThemeService } from '../../core/services/theme.service';
+import { LayoutService } from '../../core/services/layout.service';
 import { AuthStateService } from '../../core/auth/state/auth.state';
 
 @Component({
   selector: 'bethel-login',
   imports: [
-    ButtonModule, 
-    CheckboxModule, 
-    InputTextModule, 
-    PasswordModule, 
-    FormsModule, 
+    ButtonModule,
+    CheckboxModule,
+    InputTextModule,
+    PasswordModule,
+    FormsModule,
     RippleModule,
     ReactiveFormsModule
   ],
@@ -25,16 +25,15 @@ import { AuthStateService } from '../../core/auth/state/auth.state';
 export class Login implements OnInit {
   private authState = inject(AuthStateService);
   private fb = inject(FormBuilder);
+  public layoutService = inject(LayoutService);
   public loginForm!: FormGroup;
 
-  constructor(public themeService: ThemeService) {}
+  get isDarkMode() {
+    return this.layoutService.isDarkTheme;
+  }
 
   ngOnInit(): void {
     this.initForm();
-  }
-
-  public get isDarkMode() {
-    return this.themeService.isDarkMode;
   }
 
   private initForm(){

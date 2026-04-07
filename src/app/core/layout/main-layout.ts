@@ -1,15 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Topbar } from './topbar/topbar';
 import { Sidebar } from './sidebar/sidebar';
 import { Footer } from './footer/footer';
+import { LayoutService } from '../services/layout.service';
 
 @Component({
   selector: 'bethel-main-layout',
   standalone: true,
   imports: [
-    CommonModule, 
+    CommonModule,
     RouterOutlet,
     Topbar,
     Sidebar,
@@ -19,5 +20,7 @@ import { Footer } from './footer/footer';
   styleUrl: './main-layout.scss'
 })
 export class MainLayout {
+  public layoutService = inject(LayoutService);
+
   constructor() {}
 }

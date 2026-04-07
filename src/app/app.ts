@@ -1,6 +1,5 @@
 import { Component, signal } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
-import { ThemeService } from './core/services/theme.service';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
@@ -11,8 +10,4 @@ import { RouterOutlet } from '@angular/router';
 })
 export class App {
   protected readonly title = signal('bethel-controlpanel');
-
-  constructor(private themeService: ThemeService) {
-    // Initialize theme service
-  }
 }

@@ -26,11 +26,16 @@ interface MenuChangeEvent {
     providedIn: 'root'
 })
 export class LayoutService {
+    private _savedTheme = localStorage.getItem('bethel-theme-dark');
+    private _prefersDark = this._savedTheme !== null
+        ? this._savedTheme === 'true'
+        : window.matchMedia('(prefers-color-scheme: dark)').matches;
+
     _config: layoutConfig = {
         preset: 'Aura',
         primary: 'emerald',
         surface: null,
-        darkTheme: false,
+        darkTheme: this._prefersDark,
         menuMode: 'static'
     };
 
@@ -62,7 +67,7 @@ export class LayoutService {
 
     overlayOpen$ = this.overlayOpen.asObservable();
 
-    theme = computed(() => (this.layoutConfig()?.darkTheme ? 'light' : 'dark'));
+    theme = computed(() => (this.layoutConfig()?.darkTheme ? 'dark' : 'light'));
 
     isSidebarActive = computed(() => this.layoutState().overlayMenuActive || this.layoutState().staticMenuMobileActive);
 
@@ -96,6 +101,22 @@ export class LayoutService {
 
             this.handleDarkModeTransition(config);
         });
+
+        // Persist dark mode preference to localStorage
+        effect(() => {
+            const isDark = this.layoutConfig().darkTheme;
+            localStorage.setItem('bethel-theme-dark', String(isDark));
+        });
+
+        // Follow OS theme changes only when no saved user preference
+        if (this._savedTheme === null) {
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                this.layoutConfig.update(state => ({ ...state, darkTheme: e.matches }));
+            });
+        }
+
+        // Apply initial dark mode class — the effect above skips its first run
+        this.toggleDarkMode();
     }
 
     private handleDarkModeTransition(config: layoutConfig): void {
