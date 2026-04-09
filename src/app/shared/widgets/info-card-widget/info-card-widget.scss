@@ -1,0 +1,13 @@
+
+.bethel-info-card-widget {
+  &__content {
+    display: flex;
+    justify-content: space-between;
+    & h3 {
+      margin-bottom: 0;
+    }
+    & i {
+      font-size: 30px;
+    }
+  }
+}
