@@ -1,14 +1,14 @@
 <div class="bethel-youth">
-  @if(!loading()) {
+  <p-toast />
+  @if(!youthFacade.vm.loading()) {
   <div class="card">
-    <p-toast />
-    <p-dataview #dv [value]="filteredYouths()" [layout]="layout" [rows]="5" [paginator]="true">
+    <p-dataview #dv [value]="youthFacade.vm.youths()" [layout]="layout" [rows]="20" [paginator]="true">
       <ng-template #emptymessage>
         <div class="bethel-youth__empty mt-3 mb-3 text-center">Երիտասարդներ չեն գտնվել</div>
       </ng-template>
       <ng-template #header>
         <div class="flex justify-end">
-          <input pInputText [(ngModel)]="searchQuery" placeholder="Փնտրել անունով..." class="w-full md:w-80 mr-3" />
+          <input pInputText (input)="youthFacade.setSearchQuery($event.target.value)" placeholder="Փնտրել անունով..." class="w-full md:w-80 mr-3" />
           <p-selectbutton [(ngModel)]="layout" [options]="options" [allowEmpty]="false">
             <ng-template #item let-item>
               <i class="pi " [ngClass]="{ 'pi-bars': item === 'list', 'pi-table': item === 'grid' }"></i>
@@ -27,18 +27,20 @@
             <div class="flex flex-col md:flex-row justify-between md:items-center flex-1 gap-6">
               <div class="flex flex-row md:flex-col justify-between items-start gap-2">
                 <div>
-                  <h4 class="text-lg font-medium mb-2">{{ y.full_name }}</h4>
-                  <div class="mb-1"><strong>Հեռախոսահամար՝</strong> {{ y.phone_number }} <i role="button"
-                      class="pi pi-copy" (click)="onCopyToClipboard(y.phone_number)"></i></div>
-                  <div class="mb-1"><strong>Ընտանեական կարգավորում՝</strong> {{ y.family_status }}</div>
-                  <div class="mb-1"><strong>Լրացուցիչ տեղեկություն՝</strong> {{ y.additional_info }}</div>
+                  <h4 class="text-lg font-medium mb-2">{{ y.fullName }}</h4>
+                  <div class="mb-1"><strong>Հեռախոսահամար՝</strong> {{ y.phoneNumber }} <i role="button"
+                      class="pi pi-copy" (click)="onCopyToClipboard(y.phoneNumber)"></i></div>
+                  <div class="mb-1"><strong>Ընտանեական կարգավորում՝</strong> {{ y.familyStatus }}</div>
+                  @if(y.additionalInfo) {
+                    <div class="mb-1"><strong>Լրացուցիչ տեղեկություն՝</strong> {{ y.additionalInfo }}</div>
+                  }
                 </div>
               </div>
               <div class="flex flex-col md:items-end gap-8">
                 <div class="flex flex-row-reverse md:flex-row gap-2">
                   <p-button icon="pi pi-user-edit" severity="secondary" />
                   <p-button severity="danger" icon="pi pi-trash" />
-                  <a [href]="`tel:${y.phone_number}`" pButton icon="pi pi-phone"
+                  <a [href]="`tel:${y.phoneNumber}`" pButton icon="pi pi-phone"
                     class="flex-auto md:flex-initial whitespace-nowrap"></a>
                 </div>
               </div>
@@ -61,16 +63,18 @@
               <div class="pt-6">
                 <div class="flex flex-row justify-between products-start gap-2">
                   <div>
-                    <h3 class="text-lg font-medium mb-2">{{ y.full_name }}</h3>
-                    <div class="mb-1"><strong>Հեռախոսահամար՝</strong> {{ y.phone_number }} <i role="button"
-                        class="pi pi-copy" (click)="onCopyToClipboard(y.phone_number)"></i> </div>
-                    <div class="mb-1"><strong>Ընտանեական կարգավորում՝</strong> {{ y.family_status }}</div>
-                    <div class="mb-1"><strong>Լրացուցիչ տեղեկություն՝</strong> {{ y.additional_info }}</div>
+                    <h3 class="text-lg font-medium mb-2">{{ y.fullName }}</h3>
+                    <div class="mb-1"><strong>Հեռախոսահամար՝</strong> {{ y.phoneNumber }} <i role="button"
+                        class="pi pi-copy" (click)="onCopyToClipboard(y.phoneNumber)"></i> </div>
+                    <div class="mb-1"><strong>Ընտանեական կարգավորում՝</strong> {{ y.familyStatus }}</div>
+                    @if(y.additionalInfo) {
+                      <div class="mb-1"><strong>Լրացուցիչ տեղեկություն՝</strong> {{ y.additionalInfo }}</div>
+                    }
                   </div>
                 </div>
                 <div class="flex flex-col gap-6 mt-6">
                   <div class="flex gap-2">
-                    <a [href]="`tel:${y.phone_number}`" pButton icon="pi pi-phone" label="Զանգահարել"
+                    <a [href]="`tel:${y.phoneNumber}`" pButton icon="pi pi-phone" label="Զանգահարել"
                       class="flex-auto whitespace-nowrap"></a>
                   </div>
                 </div>
@@ -90,7 +94,7 @@
       </ng-template>
       <ng-template #header>
         <div class="flex justify-end">
-          <input disabled pInputText [(ngModel)]="searchQuery" placeholder="Փնտրել անունով..."
+          <input disabled pInputText (input)="youthFacade.setSearchQuery($event.target.value)" placeholder="Փնտրել անունով..."
             class="w-full md:w-80 mr-3" />
           <p-selectbutton [(ngModel)]="layout" [options]="options" [allowEmpty]="false">
             <ng-template #item let-option>
