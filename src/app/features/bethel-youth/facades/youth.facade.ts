@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { YouthState } from '../state/youth.state';
 import { YouthService } from '../services/youth.service';
-import { Youth, YouthResponse } from '../models/youth.model';
+import { YouthResponse } from '../models/youth.model';
 
 @Injectable({
   providedIn: 'root',
