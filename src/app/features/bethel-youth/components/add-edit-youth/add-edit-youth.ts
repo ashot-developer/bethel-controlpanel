@@ -4,6 +4,15 @@ import { Youth } from '../../models/youth.model';
 import { initaialYouth } from '../../state/youth.state';
 import { AddEditYouthForm } from '../add-edit-youth-form/add-edit-youth-form';
 
+interface YouthForm {
+  fullName: string;
+  phoneNumber: string;
+  bdate: Date;
+  familyStatus: string;
+  avatar: string;
+  additionalInfo: string;
+}
+
 @Component({
   selector: 'bethel-add-edit-youth',
   imports: [DialogModule, AddEditYouthForm],
@@ -13,7 +22,16 @@ import { AddEditYouthForm } from '../add-edit-youth-form/add-edit-youth-form';
 export class AddEditYouth implements OnInit {
   @Input() youth = signal<Youth>(initaialYouth);
   @Input() visible = signal<boolean>(false);
+
   protected header = signal('Ավելացնել երիտասարդ');
+  protected youthData = signal<YouthForm>({
+    fullName: '',
+    phoneNumber: '',
+    bdate: new Date(),
+    familyStatus: '',
+    avatar: '',
+    additionalInfo: ''
+  });
 
   ngOnInit(): void {
     if(this.youth().id === -1) {
