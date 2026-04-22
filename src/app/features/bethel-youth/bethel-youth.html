@@ -7,14 +7,20 @@
         <div class="bethel-youth__empty mt-3 mb-3 text-center">Երիտասարդներ չեն գտնվել</div>
       </ng-template>
       <ng-template #header>
-        <div class="flex justify-end">
-          <input pInputText (input)="youthFacade.setSearchQuery($event.target.value)" placeholder="Փնտրել անունով..." class="w-full md:w-80 mr-3" />
+        <div class="flex flex-col items-end ">
           <p-selectbutton [(ngModel)]="layout" [options]="options" [allowEmpty]="false">
             <ng-template #item let-item>
               <i class="pi " [ngClass]="{ 'pi-bars': item === 'list', 'pi-table': item === 'grid' }"></i>
             </ng-template>
           </p-selectbutton>
+          <div class="flex mt-3">
+            <input pInputText (input)="youthFacade.setSearchQuery($event.target.value)" placeholder="Փնտրել անունով..." class="w-full md:w-80" />
+            <div class="bethel-youth__actions">
+              <p-button (click)="onAddYouth()" icon="pi pi-plus" />
+            </div>
+          </div>
         </div>
+        
       </ng-template>
       <ng-template #list let-youth>
         @for(y of youth; track $index; let first = $first) {
@@ -154,3 +160,4 @@
   </div>
   }
 </div>
+<bethel-add-edit-youth [visible]="showAddYouthModal"></bethel-add-edit-youth>

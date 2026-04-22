@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { UtilsService } from './utils-service';
+import { MediaService } from './media.service';
 
-describe('UtilsService', () => {
-  let service: UtilsService;
+describe('MediaService', () => {
+  let service: MediaService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(UtilsService);
+    service = TestBed.inject(MediaService);
   });
 
   it('should be created', () => {
