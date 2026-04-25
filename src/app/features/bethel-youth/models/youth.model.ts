@@ -1,19 +1,25 @@
 export interface Youth {
-  id: number;
+  id?: number;
   fullName: string;
   phoneNumber: string;
   bdate: Date;
   familyStatus: string;
-  avatar: string;
+  avatar?: number | Avatar;
   additionalInfo: string;
-  createdAt: Date;
-  documentId: string;
-  publishedAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  documentId?: string;
+  publishedAt?: Date;
+  updatedAt?: Date;
+}
+
+export interface Avatar {
+  url?: string
 }
 
 export interface YouthUI extends Youth {
-  age: number;
+  age?: number;
+  avatarData?: { url: string };
+  avatarUrl?: string;
 }
 
 export interface YouthResponse {

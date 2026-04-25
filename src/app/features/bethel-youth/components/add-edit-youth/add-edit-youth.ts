@@ -1,17 +1,9 @@
 import { Component, Input, OnInit, signal } from '@angular/core';
 import { DialogModule } from 'primeng/dialog';
 import { Youth } from '../../models/youth.model';
-import { initaialYouth } from '../../state/youth.state';
+import { initialYouth } from '../../state/youth.state';
 import { AddEditYouthForm } from '../add-edit-youth-form/add-edit-youth-form';
 
-interface YouthForm {
-  fullName: string;
-  phoneNumber: string;
-  bdate: Date;
-  familyStatus: string;
-  avatar: string;
-  additionalInfo: string;
-}
 
 @Component({
   selector: 'bethel-add-edit-youth',
@@ -20,18 +12,10 @@ interface YouthForm {
   styleUrl: './add-edit-youth.scss',
 })
 export class AddEditYouth implements OnInit {
-  @Input() youth = signal<Youth>(initaialYouth);
+  @Input() youth = signal<Youth>(initialYouth);
   @Input() visible = signal<boolean>(false);
 
   protected header = signal('Ավելացնել երիտասարդ');
-  protected youthData = signal<YouthForm>({
-    fullName: '',
-    phoneNumber: '',
-    bdate: new Date(),
-    familyStatus: '',
-    avatar: '',
-    additionalInfo: ''
-  });
 
   ngOnInit(): void {
     if(this.youth().id === -1) {
@@ -39,5 +23,9 @@ export class AddEditYouth implements OnInit {
     } else {
       this.header.set(`Փոփոխել ${this.youth().fullName}-ի տվյալները`);
     }
+  }
+
+  protected onFormSubmit() {
+    this.visible.set(false);
   }
 }

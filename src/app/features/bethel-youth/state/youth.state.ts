@@ -1,13 +1,12 @@
 import { computed, Injectable, signal } from '@angular/core';
-import { Youth } from '../models/youth.model';
+import { Youth, YouthUI } from '../models/youth.model';
 
-export const initaialYouth: Youth = {
+export const initialYouth: YouthUI = {
   id: -1,
   fullName: '',
   phoneNumber: '',
   bdate: new Date(),
   familyStatus: '',
-  avatar: '',
   additionalInfo: '',
   createdAt: new Date(),
   updatedAt: new Date(),

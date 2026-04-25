@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component, HostBinding, Input, OnDestroy, OnInit } from '@angular/core';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { RippleModule } from 'primeng/ripple';
-import { animate, state, style, transition, trigger } from '@angular/animations';
 import { LayoutService } from '../../services/layout.service';
 import { filter, Subscription } from 'rxjs';
 import { MenuItem } from 'primeng/api';
@@ -12,23 +11,6 @@ import { MenuItem } from 'primeng/api';
   imports: [CommonModule, RouterModule, RippleModule],
   templateUrl: './menu-item.html',
   styleUrl: './menu-item.scss',
-  animations: [
-    trigger('children', [
-      state(
-        'collapsed',
-        style({
-          height: '0'
-        })
-      ),
-      state(
-        'expanded',
-        style({
-          height: '*'
-        })
-      ),
-      transition('collapsed <=> expanded', animate('400ms cubic-bezier(0.86, 0, 0.07, 1)'))
-    ])
-  ],
   providers: [LayoutService]
 })
 export class BethelMenuItem implements OnInit, OnDestroy {
@@ -105,8 +87,8 @@ export class BethelMenuItem implements OnInit, OnDestroy {
     this.layoutService.onMenuStateChange({ key: this.key });
   }
 
-  get submenuAnimation() {
-    return this.root ? 'expanded' : this.active ? 'expanded' : 'collapsed';
+  get submenuExpanded(): boolean {
+    return this.root || this.active;
   }
 
   @HostBinding('class.active-menuitem')

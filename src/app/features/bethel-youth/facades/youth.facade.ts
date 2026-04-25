@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { YouthState } from '../state/youth.state';
 import { YouthService } from '../services/youth.service';
 import { YouthResponse } from '../models/youth.model';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -28,7 +29,9 @@ export class YouthFacade {
         res.data = res.data.map(y => {
           return { 
             ...y, 
-            avatar: y.avatar || 'assets/img/no-image.png'
+            avatarUrl: typeof y.avatar !== 'number' && y.avatar?.url 
+              ? environment.uploadsUrl + y.avatar?.url : 
+                'assets/img/no-image.png'
           }
         })
         this.state.youths.set(res.data);

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { BethelMenuItem } from '../menu-item/menu-item';
@@ -7,7 +7,7 @@ import { MenuItems } from '../../consts/menu.constants';
 
 @Component({
   selector: 'bethel-menu',
-  imports: [CommonModule, BethelMenuItem, RouterModule],
+  imports: [BethelMenuItem, RouterModule],
   templateUrl: './menu.html',
   styleUrl: './menu.scss',
 })
