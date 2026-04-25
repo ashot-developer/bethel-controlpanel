@@ -1,0 +1,63 @@
+<div class="bethel-add-edit-youth-form">
+  <form (submit)="onSubmit()" class="flex flex-col">
+    <div class="flex justify-between gap-3">
+      <div class="bethel-add-edit-youth-form__upload">
+        <label for="avatar" [ngStyle]="{'background-image': 'url(' + avatar() + ')'}"
+          class="bethel-add-edit-youth-form__image flex justify-center items-center gap-2">
+          @if(!avatar()) {
+          <div class="flex justify-center items-center gap-2 p-3">
+            <i class="pi pi-upload"></i>
+            <p class="text-sm text-center">Բեռնել նկար</p>
+          </div>
+          } @else {
+          <div class="bethel-add-edit-youth-form__image-change flex justify-center items-center gap-2 p-3">
+            <i class="pi pi-upload"></i>
+            <p class="text-sm text-center">Փոխել նկար</p>
+          </div>
+          }
+        </label>
+        <input (change)="onFileSelected($event)" id="avatar" type="file">
+      </div>
+      <div class="bethel-add-edit-youth-form__name flex flex-col justify-between">
+        <p-floatlabel variant="on" [class.mb-2]="!form.firstName().invalid()">
+          <input [class.p-invalid]="form.firstName().invalid() && form.firstName().touched()" [formField]="form.firstName" pSize="large" pInputText id="name" autocomplete="off" />
+          <label for="name">Անուն</label>
+        </p-floatlabel>
+        @if (form.firstName().invalid() && form.firstName().touched()) {
+          <p-message severity="error" variant="simple" size="small" class="mb-2 mt-1">Պարտադիր լրացման դաշտ է</p-message>
+        }
+        <p-floatlabel variant="on" [class.mb-2]="!form.lastName().invalid()">
+          <input [class.p-invalid]="form.lastName().invalid() && form.lastName().touched()" [formField]="form.lastName" pSize="large" pInputText id="last" autocomplete="off" />
+          <label for="last">Ազգանուն</label>
+        </p-floatlabel>
+        @if (form.lastName().invalid() && form.lastName().touched()) {
+          <p-message severity="error" variant="simple" size="small" class="mb-2 mt-1">Պարտադիր լրացման դաշտ է</p-message>
+        }
+        <p-floatlabel variant="on">
+          <input [formField]="form.patronymicName" pSize="large" pInputText id="patronymic" autocomplete="off" />
+          <label for="patronymic">Հայրանուն</label>
+        </p-floatlabel>
+      </div>
+    </div>
+    <div class="flex justify-between items-start gap-4 bethel-add-edit-youth-form__row flex-col sm:flex-row sm:items-center">
+      <p-floatlabel variant="on" class="flex-1">
+        <p-datepicker name="bdate" [ngModel]="youthData().bdate" (ngModelChange)="onDateChange($event)" inputStyleClass="w-full" size="large" inputId="over_label" showIcon iconDisplay="input" appendTo="body" />
+        <label for="over_label">Ծնվել է</label>
+      </p-floatlabel>
+      <p-inputmask name="phoneNumber" [ngModel]="youthData().phoneNumber" (ngModelChange)="onPhoneChange($event)" styleClass="w-full" size="large" mask="+999 (99) 99-99-99" placeholder="+777 (77) 77-77-77" class="flex-1" />
+      <div class="bethel-add-edit-youth-form__family-status flex-1">
+        <div class="flex items-center">
+          <p-checkbox [formField]="form.isMarried" size="large" inputId="ingredient4" name="isMarried" value="married" />
+          <label for="ingredient4" class="ml-2"> Ամուսնացած </label>
+        </div>
+      </div>
+    </div>
+    <div class="bethel-add-edit-youth-form__row">
+      <p-floatlabel variant="on">
+        <textarea name="additionalInfo" [ngModel]="youthData().additionalInfo" (ngModelChange)="onAdditionalInfoChange($event)" pTextarea id="on_label" rows="10" cols="30" style="resize: none" class="h-full"></textarea>
+        <label for="on_label">Հավելյալ տեղեկություն</label>
+      </p-floatlabel>
+    </div>
+    <p-button [disabled]="formInvalid()" type="submit" size="large" label="Save" icon="pi pi-check" iconPos="right" />
+  </form>
+</div>

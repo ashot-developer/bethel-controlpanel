@@ -1,0 +1,11 @@
+.bethel-youth {
+  &__empty {
+    padding: 50px 0;
+    font-size: 16px;
+  }
+  &__actions {
+    padding-left: 10px;
+    margin-left: 10px;
+    border-left: 2px solid var(--p-dataview-header-border-color);
+  }
+}

@@ -1,0 +1,12 @@
+ul {
+  overflow: hidden;
+  transition: height 400ms cubic-bezier(0.86, 0, 0.07, 1);
+
+  &.submenu-expanded {
+    height: auto;
+  }
+
+  &.submenu-collapsed {
+    height: 0;
+  }
+}

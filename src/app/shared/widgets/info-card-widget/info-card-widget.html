@@ -1,0 +1,11 @@
+<div class="bethel-info-card-widget">
+  <p-card>
+    <div class="bethel-info-card-widget__content">
+      <div>
+        <ng-content select="[card-title]"></ng-content>
+        <ng-content select="[card-description]"></ng-content>
+      </div>
+      <i [ngClass]="iconClass()"></i>
+    </div>
+  </p-card>
+</div>

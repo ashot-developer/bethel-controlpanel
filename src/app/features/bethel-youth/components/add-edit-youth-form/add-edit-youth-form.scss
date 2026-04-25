@@ -1,0 +1,55 @@
+.bethel-add-edit-youth-form {
+  padding-top: 5px;
+  &__image {
+    width: 100%;
+    width: 150px;
+    height: 150px;
+    border: 1px solid var(--p-dataview-header-border-color);
+    border-radius: var(--p-button-border-radius);
+    cursor: pointer;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    &-change {
+      opacity: 0;
+      height: 100%;
+      width: 100%;
+      background-color: #0000008a;
+      transition: .2s ease-in-out;
+    }
+    &:hover &-change {
+      opacity: 1;
+    }
+  }
+  &__upload {
+    & input[type="file"] {
+      display: none;
+    }
+    & img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: cover;
+    }
+  }
+  &__name {
+    width: 100%;
+    & .p-inputtext {
+      width: 100%;
+    }
+  }
+  &__row {
+    margin-top: 20px;
+    & p-datepicker,
+    & p-inputmask,
+    & p-floatlabel {
+      width: 100%;
+    }
+    & textarea {
+      width: 100%;
+    }
+  }
+  & p-button {
+    display: inline-block;
+    margin: 15px 0 15px auto;
+  }
+}

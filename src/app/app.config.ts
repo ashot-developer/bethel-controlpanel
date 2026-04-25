@@ -48,6 +48,16 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptors([authInterceptor])),
     provideAnimations(),
     providePrimeNG({
+      translation: {
+        firstDayOfWeek: 1,
+        dayNames: ['Կիրակի', 'Երկուշաբթի', 'Երեքշաբթի', 'Չորեքշաբթի', 'Հինգշաբթի', 'Ուրբաթ', 'Շաբաթ'],
+        dayNamesShort: ['Կիր', 'Երկ', 'Երք', 'Չրք', 'Հնգ', 'Ուր', 'Շբթ'],
+        dayNamesMin: ['Կ', 'Ե', 'Ե', 'Չ', 'Հ', 'Ու', 'Շ'],
+        monthNames: ['Հունվար', 'Փետրվար', 'Մարտ', 'Ապրիլ', 'Մայիս', 'Հունիս', 'Հուլիս', 'Օգոստոս', 'Սեպտեմբեր', 'Հոկտեմբեր', 'Նոյեմբեր', 'Դեկտեմբեր'],
+        monthNamesShort: ['Հնվ', 'Փտր', 'Մրտ', 'Ապր', 'Մյս', 'Հնս', 'Հլս', 'Օգս', 'Սպտ', 'Հկտ', 'Նյմ', 'Դկտ'],
+        today: 'Այսօր',
+        clear: 'Մաքրել'
+      },
       theme: {
         preset: definePreset(Aura, {
           primitive: {
