@@ -2,7 +2,7 @@
   <p-dialog 
     [header]="header()" 
     [modal]="true" 
-    [(visible)]="visible" 
+    [visible]="visible()" (visibleChange)="visible.set($event)"
     [style]="{ width: '50rem' }"
     [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" 
     [maximizable]="true">

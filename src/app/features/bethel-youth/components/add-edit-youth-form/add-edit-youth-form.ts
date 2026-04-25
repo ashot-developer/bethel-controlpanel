@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, inject, Output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, EventEmitter, inject, Output, signal } from '@angular/core';
 import { FileUploadModule } from 'primeng/fileupload';
 import { MediaService } from '../../../../shared/services/media/media.service';
 import { environment } from '../../../../../environments/environment';
@@ -13,7 +13,6 @@ import { TextareaModule } from 'primeng/textarea';
 import { ButtonModule } from 'primeng/button';
 import { form, FormField, required } from '@angular/forms/signals';
 import { Youth } from '../../models/youth.model';
-import { YouthService } from '../../services/youth.service';
 import { MessageService } from 'primeng/api';
 import { MessageModule } from 'primeng/message';
 import { YouthFacade } from '../../facades/youth.facade';
@@ -54,12 +53,9 @@ interface YouthForm {
 export class AddEditYouthForm {
   @Output() formSubmitted: EventEmitter<void> = new EventEmitter();
   private readonly mediaUploader = inject(MediaService);
-  private readonly youthService = inject(YouthService);
   private readonly messageService = inject(MessageService);
   protected readonly youthFacade = inject(YouthFacade);
 
-  protected bdateDisplay = signal<Date>(new Date());
-  protected phoneNumberDisplay = signal<string>('');
   protected youthData = signal<YouthForm>({
     firstName: '',
     lastName: '',
@@ -74,6 +70,7 @@ export class AddEditYouthForm {
      required(schemaPath.lastName);
   });
   protected avatar = signal<string>('');
+  protected formInvalid = computed(() => this.form().invalid());
 
   onFileSelected(e: Event) {
     const file = (e.target as HTMLInputElement).files?.[0];
@@ -85,10 +82,10 @@ export class AddEditYouthForm {
         this.avatar.set(environment.uploadsUrl + res[0].url);
         this.youthData.update(v => ({ ...v, avatar: res[0].id }));
       },
-      error: (err) => {
-        this.messageService.add({ 
-          severity: 'error', 
-          summary: 'Սխալ', 
+      error: () => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Սխալ',
           detail: 'Չհաջողվեց բեռնել նկարը, կրկին փորձեք'
         });
       }
@@ -96,7 +93,6 @@ export class AddEditYouthForm {
   }
 
   protected onDateChange(date: Date) {
-    this.bdateDisplay.set(date);
     this.youthData.update(v => ({ ...v, bdate: date }));
   }
 
@@ -108,7 +104,7 @@ export class AddEditYouthForm {
     this.youthData.update(v => ({ ...v, additionalInfo: value }));
   }
 
-  protected onSubmit(event: Event) {
+  protected onSubmit() {
     if(!this.form().valid())
       return;
     
@@ -125,21 +121,20 @@ export class AddEditYouthForm {
       additionalInfo: this.youthData().additionalInfo
     }
     
-    this.youthService.createYouth(payload).subscribe({
+    this.youthFacade.createYouth(payload).subscribe({
       next: () => {
-        this.youthFacade.loadYouthList();
-        this.messageService.add({ 
-          severity: 'success', 
-          summary: 'Ու՜ռա', 
-          detail: 'Ավելացվել է նոր երիտասարդ' 
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Ու՜ռա',
+          detail: 'Ավելացվել է նոր երիտասարդ'
         });
         this.formSubmitted.emit();
       },
       error: () => {
-        this.messageService.add({ 
-          severity: 'error', 
-          summary: 'Սխալ', 
-          detail: 'Ինչ որ բան այն չէ, կրկին փորձեք' 
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Սխալ',
+          detail: 'Ինչ որ բան այն չէ, կրկին փորձեք'
         });
       }
     })

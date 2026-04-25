@@ -29,6 +29,10 @@ export interface YouthResponse {
   }
 }
 
+export interface YouthSingleResponse {
+  data: Youth;
+}
+
 export interface Pagination {
   start: number;
   limit: number;

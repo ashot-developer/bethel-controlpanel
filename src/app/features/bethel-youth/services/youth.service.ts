@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Youth, YouthResponse } from '../models/youth.model';
+import { Youth, YouthResponse, YouthSingleResponse } from '../models/youth.model';
 import { environment } from '../../../../environments/environment';
 
 @Injectable({
@@ -14,7 +14,11 @@ export class YouthService {
     return this.http.get<YouthResponse>(`${environment.apiUrl}/youths?pagination[start]=0&pagination[limit]=99999&sort[0]=createdAt:desc&populate=*`);
   }
 
-  public createYouth(payload: Youth): Observable<YouthResponse> {
-    return this.http.post<YouthResponse>(`${environment.apiUrl}/youths`, {data: {...payload}});
+  public createYouth(payload: Youth): Observable<YouthSingleResponse> {
+    return this.http.post<YouthSingleResponse>(`${environment.apiUrl}/youths`, { data: { ...payload } });
+  }
+
+  public deleteYouth(documentId: string): Observable<void> {
+    return this.http.delete<void>(`${environment.apiUrl}/youths/${documentId}`);
   }
 }

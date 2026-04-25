@@ -9,9 +9,10 @@ import { SkeletonModule } from 'primeng/skeleton';
 import { UtilsService } from '../../shared/services/utils/utils.service';
 import { InputTextModule } from 'primeng/inputtext';
 import { ToastModule } from 'primeng/toast';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { YouthFacade } from './facades/youth.facade';
 import { AddEditYouth } from './components/add-edit-youth/add-edit-youth';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @Component({
   selector: 'bethel-youth',
@@ -25,16 +26,18 @@ import { AddEditYouth } from './components/add-edit-youth/add-edit-youth';
     SkeletonModule, 
     InputTextModule, 
     ToastModule,
-    AddEditYouth
+    AddEditYouth,
+    ConfirmDialogModule
   ],
   templateUrl: './bethel-youth.html',
   styleUrl: './bethel-youth.scss',
-  providers: [MessageService]
+  providers: [MessageService, ConfirmationService]
 })
 export class BethelYouth {
   private readonly utilsService = inject(UtilsService);
   private readonly messageService = inject(MessageService);
   protected readonly youthFacade = inject(YouthFacade);
+  private confirmationService = inject(ConfirmationService);
 
   constructor() {
     effect(() => {
@@ -80,5 +83,34 @@ export class BethelYouth {
 
   protected onAddYouth(): void {
     this.showAddYouthModal.set(true);
+  }
+
+  protected onDeletYouth(e: Event, documentId: string): void {
+    this.confirmationService.confirm({
+      target: e.target as EventTarget,
+      message: 'Իրո՞ք ուզում ես ջնջել երիտասարդին',
+      icon: 'pi pi-info-circle',
+      rejectLabel: 'Չեղարկել',
+      header: 'Համոզվա՞ծ ես',
+      rejectButtonProps: {
+        label: 'Չեղարկել',
+        severity: 'secondary',
+        outlined: true
+      },
+      acceptButtonProps: {
+        label: 'Ջնջել',
+        severity: 'danger'
+      },
+      accept: () => {
+        this.youthFacade.deleteYouth(documentId).subscribe({
+          next: () => {
+            this.messageService.add({ severity: 'success', summary: 'Ու՜ռա', detail: 'Երիտասարդը ջնջվել է' });
+          },
+          error: () => {
+            this.messageService.add({ severity: 'error', summary: 'Սխալ', detail: 'Չհաջողվեց ջնջել երիտասարդին' });
+          }
+        });
+      },
+    })
   }
 }

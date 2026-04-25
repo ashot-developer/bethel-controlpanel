@@ -1,8 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { YouthState } from '../state/youth.state';
 import { YouthService } from '../services/youth.service';
-import { YouthResponse } from '../models/youth.model';
+import { Youth, YouthResponse, YouthSingleResponse } from '../models/youth.model';
 import { environment } from '../../../../environments/environment';
+import { Observable, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -19,6 +20,20 @@ export class YouthFacade {
   
   setSearchQuery(q: string): void {
     this.state.searchQuery.set(q);
+  }
+
+  createYouth(payload: Youth): Observable<YouthSingleResponse> {
+    return this.youthService.createYouth(payload).pipe(
+      tap(() => this.loadYouthList())
+    );
+  }
+
+  deleteYouth(documentId: string): Observable<void> {
+    return this.youthService.deleteYouth(documentId).pipe(
+      tap(() => {
+        this.state.youths.update(list => list.filter(y => y.documentId !== documentId));
+      })
+    );
   }
 
   loadYouthList(): void {

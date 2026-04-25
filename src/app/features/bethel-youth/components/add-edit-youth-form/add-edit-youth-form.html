@@ -1,5 +1,5 @@
 <div class="bethel-add-edit-youth-form">
-  <form (submit)="onSubmit($event)" class="flex flex-col">
+  <form (submit)="onSubmit()" class="flex flex-col">
     <div class="flex justify-between gap-3">
       <div class="bethel-add-edit-youth-form__upload">
         <label for="avatar" [ngStyle]="{'background-image': 'url(' + avatar() + ')'}"
@@ -44,7 +44,7 @@
         <p-datepicker name="bdate" [ngModel]="youthData().bdate" (ngModelChange)="onDateChange($event)" inputStyleClass="w-full" size="large" inputId="over_label" showIcon iconDisplay="input" appendTo="body" />
         <label for="over_label">Ծնվել է</label>
       </p-floatlabel>
-      <p-inputmask name="phoneNumber" [ngModel]="phoneNumberDisplay" (ngModelChange)="onPhoneChange($event)" styleClass="w-full" size="large" mask="+999 (99) 99-99-99" placeholder="+777 (77) 77-77-77" class="flex-1" />
+      <p-inputmask name="phoneNumber" [ngModel]="youthData().phoneNumber" (ngModelChange)="onPhoneChange($event)" styleClass="w-full" size="large" mask="+999 (99) 99-99-99" placeholder="+777 (77) 77-77-77" class="flex-1" />
       <div class="bethel-add-edit-youth-form__family-status flex-1">
         <div class="flex items-center">
           <p-checkbox [formField]="form.isMarried" size="large" inputId="ingredient4" name="isMarried" value="married" />
@@ -58,6 +58,6 @@
         <label for="on_label">Հավելյալ տեղեկություն</label>
       </p-floatlabel>
     </div>
-  <p-button [disabled]="form().invalid()" type="submit" size="large" label="Save" icon="pi pi-check" iconPos="right" /> 
+    <p-button [disabled]="formInvalid()" type="submit" size="large" label="Save" icon="pi pi-check" iconPos="right" />
   </form>
 </div>
