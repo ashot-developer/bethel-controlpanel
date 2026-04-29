@@ -13,12 +13,16 @@ export interface Youth {
 }
 
 export interface Avatar {
+  id: number;
   url?: string
 }
 
 export interface YouthUI extends Youth {
   age?: number;
-  avatarData?: { url: string };
+  avatarData?: { 
+    id: number;
+    url?: string;
+  };
   avatarUrl?: string;
 }
 

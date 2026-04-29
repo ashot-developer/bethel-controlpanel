@@ -47,7 +47,7 @@
       <p-inputmask name="phoneNumber" [ngModel]="youthData().phoneNumber" (ngModelChange)="onPhoneChange($event)" styleClass="w-full" size="large" mask="+999 (99) 99-99-99" placeholder="+777 (77) 77-77-77" class="flex-1" />
       <div class="bethel-add-edit-youth-form__family-status flex-1">
         <div class="flex items-center">
-          <p-checkbox [formField]="form.isMarried" size="large" inputId="ingredient4" name="isMarried" value="married" />
+          <p-checkbox [formField]="form.isMarried" size="large" inputId="ingredient4" name="isMarried" value="married" [binary]="true"/>
           <label for="ingredient4" class="ml-2"> Ամուսնացած </label>
         </div>
       </div>
@@ -58,6 +58,6 @@
         <label for="on_label">Հավելյալ տեղեկություն</label>
       </p-floatlabel>
     </div>
-    <p-button [disabled]="formInvalid()" type="submit" size="large" label="Save" icon="pi pi-check" iconPos="right" />
+    <p-button [disabled]="formInvalid()" type="submit" size="large" label="Պահպանել" icon="pi pi-check" iconPos="right" />
   </form>
 </div>

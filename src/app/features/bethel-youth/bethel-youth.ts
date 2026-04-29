@@ -11,8 +11,9 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { YouthFacade } from './facades/youth.facade';
-import { AddEditYouth } from './components/add-edit-youth/add-edit-youth';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { DialogModule } from 'primeng/dialog';
+import { AddEditYouthForm } from './components/add-edit-youth-form/add-edit-youth-form';
 
 @Component({
   selector: 'bethel-youth',
@@ -26,7 +27,8 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     SkeletonModule, 
     InputTextModule, 
     ToastModule,
-    AddEditYouth,
+    DialogModule, 
+    AddEditYouthForm,
     ConfirmDialogModule
   ],
   templateUrl: './bethel-youth.html',
@@ -53,7 +55,8 @@ export class BethelYouth {
 
   options: any[] = ['list', 'grid'];
   layout = this.options[0];
-  showAddYouthModal = signal<boolean>(false);
+  visible = signal<boolean>(false);
+  header = signal('Ավելացնել երիտասարդ');
 
   ngOnInit() {
     this.youthFacade.loadYouthList();
@@ -82,10 +85,19 @@ export class BethelYouth {
   }
 
   protected onAddYouth(): void {
-    this.showAddYouthModal.set(true);
+    this.youthFacade.setYouthId(-1);
+    this.setDialogHeader();
+    this.visible.set(true);
+    
   }
 
-  protected onDeletYouth(e: Event, documentId: string): void {
+  protected onEditYouth(id: number): void {
+    this.youthFacade.setYouthId(id);
+    this.setDialogHeader();
+    this.visible.set(true);
+  }
+
+  protected onDeleteYouth(e: Event, documentId: string): void {
     this.confirmationService.confirm({
       target: e.target as EventTarget,
       message: 'Իրո՞ք ուզում ես ջնջել երիտասարդին',
@@ -112,5 +124,18 @@ export class BethelYouth {
         });
       },
     })
+  }
+
+  protected onFormSubmit() {
+    this.visible.set(false);
+  }
+
+  private setDialogHeader() {
+    const selectedYouth = this.youthFacade.vm.selectedYouth()
+    if(selectedYouth?.id === -1) {
+      this.header.set('Ավելացնել երիտասարդ');
+    } else {
+      this.header.set(`Փոփոխել ${selectedYouth?.fullName}-ի տվյալները`);
+    }
   }
 }

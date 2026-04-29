@@ -18,15 +18,24 @@ export const initialYouth: YouthUI = {
   providedIn: 'root',
 })
 export class YouthState {
-  youths = signal<Youth[]>([]);
+  youths = signal<YouthUI[]>([]);
   loading = signal<boolean>(false);
   error = signal<boolean>(false);
-  searchQuery = signal('');
+  searchQuery = signal<string>('');
+  selectedYouthId = signal<number>(-1);
 
   filteredYouths = computed(() => {
     const query = this.searchQuery().toLowerCase().trim();
     if(!query) return this.youths();
 
-    return this.youths().filter(youth => youth.fullName.toLowerCase().includes(query))
+    return this.youths().filter(youth => youth.fullName.toLowerCase().includes(query));
   })
+
+  selectedYouth = computed(() => {
+    const id = this.selectedYouthId();
+
+    if (id === -1) return initialYouth;
+
+    return this.youths().find(y => y.id === id) ?? initialYouth;
+  });
 }

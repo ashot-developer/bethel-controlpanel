@@ -21,4 +21,8 @@ export class YouthService {
   public deleteYouth(documentId: string): Observable<void> {
     return this.http.delete<void>(`${environment.apiUrl}/youths/${documentId}`);
   }
+
+  public updateYouth(payload: Youth, documentId: string): Observable<YouthSingleResponse> {
+    return this.http.put<YouthSingleResponse>(`${environment.apiUrl}/youths/${documentId}`, { data: { ...payload } });
+  }
 }

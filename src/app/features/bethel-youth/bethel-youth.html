@@ -45,8 +45,8 @@
               </div>
               <div class="flex flex-col md:items-end gap-8">
                 <div class="flex flex-row-reverse md:flex-row gap-2">
-                  <p-button icon="pi pi-user-edit" severity="secondary" />
-                  <p-button (click)="onDeletYouth($event, y.documentId)" severity="danger" icon="pi pi-trash" />
+                  <p-button (click)="onEditYouth(y.id)" icon="pi pi-user-edit" severity="secondary" />
+                  <p-button (click)="onDeleteYouth($event, y.documentId)" severity="danger" icon="pi pi-trash" />
                   <a [href]="`tel:${y.phoneNumber}`" pButton icon="pi pi-phone"
                     class="flex-auto md:flex-initial whitespace-nowrap"></a>
                 </div>
@@ -161,4 +161,14 @@
   </div>
   }
 </div>
-<bethel-add-edit-youth [visible]="showAddYouthModal"></bethel-add-edit-youth>
+<p-dialog 
+  [header]="header()" 
+  [modal]="true" 
+  [visible]="visible()" (visibleChange)="visible.set($event)"
+  [style]="{ width: '50rem' }"
+  [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" 
+  [maximizable]="true">
+  @if (visible()) {
+    <bethel-add-edit-youth-form (formSubmitted)="onFormSubmit()" [youth]="youthFacade.vm.selectedYouth()"></bethel-add-edit-youth-form>
+  }
+</p-dialog>

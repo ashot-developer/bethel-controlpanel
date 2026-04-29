@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, EventEmitter, inject, Output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, EventEmitter, inject, Input, OnInit, Output, signal } from '@angular/core';
 import { FileUploadModule } from 'primeng/fileupload';
 import { MediaService } from '../../../../shared/services/media/media.service';
 import { environment } from '../../../../../environments/environment';
@@ -12,10 +12,11 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { TextareaModule } from 'primeng/textarea';
 import { ButtonModule } from 'primeng/button';
 import { form, FormField, required } from '@angular/forms/signals';
-import { Youth } from '../../models/youth.model';
-import { MessageService } from 'primeng/api';
+import { Youth, YouthUI } from '../../models/youth.model';
 import { MessageModule } from 'primeng/message';
 import { YouthFacade } from '../../facades/youth.facade';
+import { initialYouth } from '../../state/youth.state';
+import { NotificationService } from '../../../../shared/services/notification/notification.service';
 
 
 interface YouthForm {
@@ -47,14 +48,15 @@ interface YouthForm {
   ],
   templateUrl: './add-edit-youth-form.html',
   styleUrl: './add-edit-youth-form.scss',
-  providers: [MediaService],
+  providers: [MediaService, NotificationService],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AddEditYouthForm {
+export class AddEditYouthForm implements OnInit {
   @Output() formSubmitted: EventEmitter<void> = new EventEmitter();
+  @Input() youth: YouthUI = initialYouth;
   private readonly mediaUploader = inject(MediaService);
-  private readonly messageService = inject(MessageService);
   protected readonly youthFacade = inject(YouthFacade);
+  protected readonly notificationService = inject(NotificationService);
 
   protected youthData = signal<YouthForm>({
     firstName: '',
@@ -72,6 +74,10 @@ export class AddEditYouthForm {
   protected avatar = signal<string>('');
   protected formInvalid = computed(() => this.form().invalid());
 
+  ngOnInit(): void {
+    this.initForm();
+  }
+
   onFileSelected(e: Event) {
     const file = (e.target as HTMLInputElement).files?.[0];
     if(!file)
@@ -83,11 +89,7 @@ export class AddEditYouthForm {
         this.youthData.update(v => ({ ...v, avatar: res[0].id }));
       },
       error: () => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Սխալ',
-          detail: 'Չհաջողվեց բեռնել նկարը, կրկին փորձեք'
-        });
+        this.notificationService.error('Չհաջողվեց բեռնել նկարը, կրկին փորձեք');
       }
     })
   }
@@ -105,9 +107,9 @@ export class AddEditYouthForm {
   }
 
   protected onSubmit() {
-    if(!this.form().valid())
+    if (!this.form().valid())
       return;
-    
+
     const payload: Youth = {
       fullName: [
         this.youthData().firstName,
@@ -120,23 +122,48 @@ export class AddEditYouthForm {
       avatar: this.youthData().avatar,
       additionalInfo: this.youthData().additionalInfo
     }
-    
-    this.youthFacade.createYouth(payload).subscribe({
-      next: () => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Ու՜ռա',
-          detail: 'Ավելացվել է նոր երիտասարդ'
-        });
-        this.formSubmitted.emit();
-      },
-      error: () => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Սխալ',
-          detail: 'Ինչ որ բան այն չէ, կրկին փորձեք'
-        });
-      }
-    })
+
+    if (this.youth.id === -1) {
+      this.youthFacade.createYouth(payload).subscribe({
+        next: () => {
+          this.notificationService.success('Ավելացվել է նոր երիտասարդ');
+          this.formSubmitted.emit();
+        },
+        error: () => {
+          this.notificationService.error('Ինչ որ բան այն չէ, կրկին փորձեք');
+        }
+      })
+    } else {
+      this.youthFacade.updateYouth(payload, this.youth.documentId ?? '').subscribe({
+        next: () => {
+          this.notificationService.success('Երիտասարդի տվյալները թարմացվել են');
+          this.formSubmitted.emit();
+        },
+        error: () => {
+          this.notificationService.error('Ինչ որ բան այն չէ, կրկին փորձեք');
+        }
+      })
+    }
+
+  }
+
+  private initForm() {
+    const fullNameArray = this.youth.fullName.split(' ');
+    const firstName = fullNameArray[0] ?? '';
+    const lastName = fullNameArray[1] ?? '';
+    const patronymicName = fullNameArray?.[2] ?? '';
+    if(typeof this.youth.avatar === 'object') {
+      this.avatar.set(this.youth.avatarUrl ?? '')
+    }
+    this.youthData.set({
+      firstName: firstName,
+      lastName: lastName,
+      patronymicName: patronymicName,
+      phoneNumber: this.youth.phoneNumber ?? '',
+      bdate: this.youth.bdate ? new Date(this.youth.bdate) : new Date(),
+      isMarried: this.youth.familyStatus.toLowerCase() === 'ամուսնացած',
+      additionalInfo: this.youth.additionalInfo ?? '',
+      avatar: this.youth.avatarData?.id
+    });
   }
 }
